@@ -12,7 +12,7 @@ const Page = () => {
   if (!isClient) return null; // Prevents mismatch by rendering nothing initially
 
   return (
-    <div className="h-full w-full bg-red-300">
+    <div className="h-full w-full bg-[#b4b2b233]">
       <Front />
     </div>
   );

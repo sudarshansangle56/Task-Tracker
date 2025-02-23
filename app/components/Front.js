@@ -1,17 +1,32 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 function Front() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [mainTask, setMainTask] = useState([]);
-  const [taskId, setTaskId] = useState(1); // Unique counter for tasks
+  const [taskId, setTaskId] = useState(1);
+  const [doneTask, setDoneTask]= useState([]);
+
+  useEffect(() => {
+    const storedTasks = JSON.parse(localStorage.getItem("tasks"));
+    if (storedTasks && storedTasks.length > 0) {
+      setMainTask(storedTasks);
+      setTaskId(storedTasks[storedTasks.length - 1].id + 1); // Set next taskId
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(mainTask));
+  }, [mainTask]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     if (!title.trim() || !desc.trim()) return; // Prevent empty tasks
 
-    setMainTask([...mainTask, { id: taskId, title, desc }]);
-    setTaskId(taskId + 1); // Increment ID counter
+    const newTask = { id: taskId, title, desc };
+    setMainTask([...mainTask, newTask]);
+    setTaskId(taskId + 1);
     setTitle("");
     setDesc("");
   };
@@ -20,29 +35,31 @@ function Front() {
     setMainTask(mainTask.filter((task) => task.id !== id));
   };
 
+  const handleDone = (id , title, desc) => {
+    alert(`Your task No ${id} has been done`);
+    setDoneTask([...doneTask,{id,title,desc}]);
+    setMainTask(mainTask.filter((task) => task.id !== id));
+  };
+
   return (
     <div>
-      <div className="h-11 w-full text-center p-2 text-xl bg-black text-white">
-        <h2>TO DO LIST</h2>
-      </div>
-
       <form onSubmit={submitHandler} className="p-4">
         <input
-          className="border-2 border-black m-2 p-1"
+          className="border-2 drop-shadow-xl rounded-lg border-[#e1dbdb] m-2 p-1"
           type="text"
           placeholder="Enter task name"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <input
-          className="border-2 border-black m-2 p-1"
+          className="border-2 drop-shadow-xl rounded-lg border-[#e1dbdb] m-2 p-1"
           type="text"
           placeholder="Enter description"
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
         />
         <button
-          className="bg-black font-bold rounded text-white w-20 border-2 border-black text-xl"
+          className="bg-black drop-shadow-xl rounded text-white w-20 border-2 border-black text-[15px]"
           type="submit"
         >
           Submit
@@ -51,28 +68,64 @@ function Front() {
 
       <hr />
 
-      <div className="p-8 bg-slate-200">
-        {mainTask.length > 0 ? (
-          <ul>
-            {mainTask.map((task) => (
-              <li
-                key={task.id}
-                className="flex justify-between bg-white p-2 my-2 border border-gray-300 rounded"
-              >
-                <span className="font-bold">{task.title}</span>
-                <span>{task.desc}</span>
-                <button
-                  className="bg-red-500 border-2 w-20 text-white border-black rounded"
-                  onClick={() => deleteHandler(task.id)}
-                >
-                  Delete
-                </button>
-              </li>
+      <div className=" rounded-lg bg-[#c4d2de44] flex flex-col items-center justify-center">
+        <div className="pt-2 flex gap-2 flex-row text-[25px]">
+          <div className="bg-[#f21919] mt-[11px] rounded-xl h-5 w-5"></div>
+          <h3>Pending-Tasks</h3>
+        </div>
+        <div className="flex flex-wrap items-center justify-center">
+          <div className="flex flex-col h-full w-full">
+            {mainTask.length > 0 ? (
+              <ul className="flex gap-7 p-7 flex-wrap items-center justify-center">
+                {mainTask.map((task) => (
+                  <div
+                    key={task.id}
+                    className="bg-[#b0b0b089] flex flex-col items-center justify-center rounded-md min-h-[200px] w-[270px]"
+                  >
+                    <h3>Task No: {task.id}</h3>
+                    <h3>{new Date().toLocaleDateString()}</h3>
+                    <span className="font-bold">Title: {task.title}</span>
+                    <span>Description: {task.desc}</span>
+                    <div className="sm:gap-3">
+                      <button
+                        className="bg-[#e23535] h-6 text-[13px] border-2 w-[60px] text-white border-[#e23535] rounded"
+                        onClick={() => deleteHandler(task.id)}
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={() => handleDone(task.id ,task.title, task.desc)}
+                        className="bg-teal-600 ml-3 hover:bg-teal-700 h-6 text-[13px] border-2 w-[60px] text-white border-none rounded"
+                      >
+                        Done
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </ul>
+            ) : (
+              <h2 className="text-white">No Task Available</h2>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="bg-[#2222] p-4 h-[700px] w-full">
+      {doneTask.length > 0 ? (
+          <div className="grid gap-4">
+            {doneTask.map((task) => (
+              <div key={task.id}  className="bg-[#b0b0b089] flex flex-col items-center justify-center rounded-md min-h-[200px] w-[250px]">
+              <h3>Task No: {task.id}</h3>
+                    <h3>{new Date().toLocaleDateString()}</h3>
+                    <span className="font-bold">Title: {task.title}</span>
+                    <span>Description: {task.desc}</span>
+              </div>
             ))}
-          </ul>
+          </div>
+          
         ) : (
-          <h2>No Task Available</h2>
+          <h3 className="text-gray-600">No completed tasks</h3>
         )}
+   
       </div>
     </div>
   );

@@ -71,7 +71,7 @@ function Front() {
 
       <hr />
 
-      <div className=" rounded-lg bg-[#c4d2de44] flex flex-col items-center justify-center">
+      <div className=" rounded-lg bg-[#c4d2de44] min-h-[200px] flex flex-col items-center justify-center">
         <div className="pt-2 flex gap-2 flex-row text-[25px]">
           <div className="bg-[#f21919] mt-[11px] rounded-xl h-5 w-5"></div>
           <h3>Pending-Tasks</h3>
@@ -109,12 +109,12 @@ function Front() {
                 ))}
               </ul>
             ) : (
-              <h2 className="text-white">No Task Available</h2>
+              <h2 className="text-gray-600">No Task Available</h2>
             )}
           </div>
         </div>
       </div>
-      <div className=" bg-[#c4d2de44] p-4 min-h-[300px] mt-4 mb-4 w-full">
+      <div className=" bg-[#c4d2de44] flex flex-col items-center justify-center p-4 min-h-[200px] mt-4 mb-4 w-full">
         <div className="pt-2 flex gap-2 w-full items-center justify-center flex-row text-[25px]">
           <div className="bg-[#42a72b]  mt-[8px] rounded-xl h-5 w-5"></div>
           <h3>Completed-Tasks</h3>

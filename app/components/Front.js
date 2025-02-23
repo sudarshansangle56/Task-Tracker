@@ -6,7 +6,7 @@ function Front() {
   const [desc, setDesc] = useState("");
   const [mainTask, setMainTask] = useState([]);
   const [taskId, setTaskId] = useState(1);
-  const [doneTask, setDoneTask]= useState([]);
+  const [doneTask, setDoneTask] = useState([]);
 
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem("tasks"));
@@ -34,15 +34,18 @@ function Front() {
   const deleteHandler = (id) => {
     setMainTask(mainTask.filter((task) => task.id !== id));
   };
+  const deleteHandlerC = (id)=>{
+    setDoneTask(doneTask.filter((task)=> task.id !==id));
+  }
 
-  const handleDone = (id , title, desc) => {
+  const handleDone = (id, title, desc) => {
     alert(`Your task No ${id} has been done`);
-    setDoneTask([...doneTask,{id,title,desc}]);
+    setDoneTask([...doneTask, { id, title, desc }]);
     setMainTask(mainTask.filter((task) => task.id !== id));
   };
 
   return (
-    <div>
+    <div className="overflow-hidden">
       <form onSubmit={submitHandler} className="p-4">
         <input
           className="border-2 drop-shadow-xl rounded-lg border-[#e1dbdb] m-2 p-1"
@@ -80,7 +83,7 @@ function Front() {
                 {mainTask.map((task) => (
                   <div
                     key={task.id}
-                    className="bg-[#b0b0b089] flex flex-col items-center justify-center rounded-md min-h-[200px] w-[270px]"
+                    className="bg-[#b0b0b089] drop-shadow-xl flex flex-col items-center justify-center rounded-md min-h-[200px] w-[270px]"
                   >
                     <h3>Task No: {task.id}</h3>
                     <h3>{new Date().toLocaleDateString()}</h3>
@@ -94,7 +97,9 @@ function Front() {
                         Delete
                       </button>
                       <button
-                        onClick={() => handleDone(task.id ,task.title, task.desc)}
+                        onClick={() =>
+                          handleDone(task.id, task.title, task.desc)
+                        }
                         className="bg-teal-600 ml-3 hover:bg-teal-700 h-6 text-[13px] border-2 w-[60px] text-white border-none rounded"
                       >
                         Done
@@ -109,23 +114,34 @@ function Front() {
           </div>
         </div>
       </div>
-      <div className="bg-[#2222] p-4 h-[700px] w-full">
-      {doneTask.length > 0 ? (
+      <div className=" bg-[#c4d2de44] p-4 min-h-[300px] mt-4 mb-4 w-full">
+        <div className="pt-2 flex gap-2 w-full items-center justify-center flex-row text-[25px]">
+          <div className="bg-[#42a72b]  mt-[8px] rounded-xl h-5 w-5"></div>
+          <h3>Completed-Tasks</h3>
+        </div>
+        {doneTask.length > 0 ? (
           <div className="grid gap-4">
             {doneTask.map((task) => (
-              <div key={task.id}  className="bg-[#b0b0b089] flex flex-col items-center justify-center rounded-md min-h-[200px] w-[250px]">
-              <h3>Task No: {task.id}</h3>
-                    <h3>{new Date().toLocaleDateString()}</h3>
-                    <span className="font-bold">Title: {task.title}</span>
-                    <span>Description: {task.desc}</span>
+              <div
+                key={task.id}
+                className="bg-[#b0b0b089] drop-shadow-xl flex flex-col items-center justify-center rounded-md min-h-[200px] w-[250px]"
+              >
+                <h3>Task No: {task.id}</h3>
+                <h3>{new Date().toLocaleDateString()}</h3>
+                <span className="font-bold">Title: {task.title}</span>
+                <span>Description: {task.desc}</span>
+                <button
+                  className="bg-[#e23535] h-6 text-[13px] border-2 w-[60px] text-white border-[#e23535] rounded"
+                  onClick={() => deleteHandlerC(task.id)}
+                >
+                  Delete
+                </button>
               </div>
             ))}
           </div>
-          
         ) : (
           <h3 className="text-gray-600">No completed tasks</h3>
         )}
-   
       </div>
     </div>
   );

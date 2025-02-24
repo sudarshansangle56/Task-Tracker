@@ -22,9 +22,8 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="h-[60px] w-full flex items-center justify-between text-[23px] bg-black text-white">
-          <h2 className="ml-3">Task Tracker</h2>
-          <p className="text-[15px] mr-4">This Site Still In development</p>
+        <div className="h-[10px] w-full flex items-center justify-between text-[23px] bg-[#202D48] text-white">
+       
         </div>
         {children}
       </body>

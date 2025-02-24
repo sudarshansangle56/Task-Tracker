@@ -71,7 +71,7 @@ function Front() {
       </form>
       <hr />
       <div className="sm:flex sm:justify-evenly sm:flex-row">
-        <div className=" rounded-lg  min-h-[200px] min-w-[300px]  flex flex-col items-center justify-center">
+        <div className=" rounded-lg  min-h-[200px] min-w-[50%] flex flex-col items-center justify-center">
           <div className="pt-2 flex gap-2 flex-row text-[25px]">
             <div className="bg-[#f21919] mt-[11px] rounded-xl h-5 w-5"></div>
             <h3>Pending-Tasks</h3>
@@ -83,15 +83,15 @@ function Front() {
                   {mainTask.map((task) => (
                     <div
                       key={task.id}
-                      className="bg-[#202d4816] border-[2px] border-[#737b8e5b] drop-shadow-xl flex justify-center flex-col pl-2 pt-2 rounded-md min-h-[180px] w-[250px]"
+                      className="bg-[#202d4816] border-[2px] border-[#737b8e5b] drop-shadow-xl flex justify-center flex-col pl-2 pt-2 rounded-md min-h-[185px] w-[250px]"
                     >
                       <div className="flex gap-2"> 
                       <h3>Task No: {task.id}</h3>
                       <h3> Date:{new Date().toLocaleDateString()}</h3>
                       </div>
                       <span className="font-semibold mt-1 text-[22px]">Title: {task.title}</span>
-                      <span className="mt-1">Description: {task.desc}</span>
-                      <div className="sm:gap-3 mt-1">
+                      <span className="">Description: {task.desc}</span>
+                      <div className="sm:gap-3 mt-1 mb-1">
                         <button
                           className="bg-[#e23535] h-6 text-[13px] border-2 w-[60px] text-white border-[#e23535] rounded"
                           onClick={() => deleteHandler(task.id)}
@@ -116,24 +116,24 @@ function Front() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center p-4 min-w-[300px] rounded-lg min-h-[220px]">
+        <div className="flex flex-col items-center  justify-center sm:justify-normal pl-3 pt-2 pr-3 min-w-[50%] rounded-lg min-h-[220px]">
           <div className="flex gap-2 mb-7 w-full items-center justify-center flex-row text-[25px]">
             <div className="bg-[#42a72b]  mt-[8px] rounded-xl h-5 w-5"></div>
             <h3>Completed-Tasks</h3>
           </div>
           {doneTask.length > 0 ? (
-            <div className="grid gap-4">
+            <div className="flex w-full flex-wrap  items-center  justify-center mb-5 gap-7">
               {doneTask.map((task) => (
                 <div
                   key={task.id}
-                  className="bg-[#202d4816] border-[2px] border-[#737b8e5b] drop-shadow-xl flex flex-col pl-2 justify-center rounded-md min-h-[180px] w-[250px]"
+                  className="bg-[#202d4816] border-[2px] border-[#737b8e5b] drop-shadow-xl flex  flex-col pl-2 justify-center rounded-md min-h-[185px] w-[250px]"
                 >
                       <div className="flex gap-2"> 
                       <h3>Task No: {task.id}</h3>
                       <h3> Date:{new Date().toLocaleDateString()}</h3>
                       </div>
                   <span className="font-semibold text-[22px] mt-1">Title: {task.title}</span>
-                  <span className="mt-1">Description: {task.desc}</span>
+                  <span className="">Description: {task.desc}</span>
                   <button
                     className="bg-[#e23535] mt-1 h-6 text-[13px] border-2 w-[60px] text-white border-[#e23535] rounded"
                     onClick={() => deleteHandlerC(task.id)}

@@ -7,7 +7,7 @@ function Sidebar({nav}) {
   }
  
   return (
-    <div className={`h-screen transition-all duration-300 ${nav ? "w-[200px]" : "w-[0px]"} pl-[2px] pt-4 bg-[#202D48]`}>
+    <div className={`min-h-[730px] transition-all duration-300 ${nav ? "w-[200px]" : "w-[0px]"} pl-[2px] pt-4 bg-[#202D48]`}>
        <h2 className='text-white font-semibold leading-[50px]  text-[37px]'>Task <br />Tracker</h2>
 
        <div className='w-[95%] mt-3 h-[40px] flex items-center justify-center'>

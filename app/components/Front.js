@@ -8,7 +8,6 @@ function Front() {
   const [taskId, setTaskId] = useState(1);
   const [doneTask, setDoneTask] = useState([]);
 
-  // Load tasks from localStorage
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
     const storedDoneTasks = JSON.parse(localStorage.getItem("doneTasks")) || [];
@@ -20,12 +19,10 @@ function Front() {
     setDoneTask(storedDoneTasks);
   }, []);
 
-  // Save pending tasks to localStorage
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(mainTask));
   }, [mainTask]);
 
-  // Save completed tasks to localStorage
   useEffect(() => {
     localStorage.setItem("doneTasks", JSON.stringify(doneTask));
   }, [doneTask]);
@@ -57,7 +54,8 @@ function Front() {
   };
 
   return (
-    <div className="overflow-hidden bg-white w-full rounded-lg mr-2">
+    <div className="overflow-hidden bg-white w-full rounded-t-lg
+ min-h-[710px]  mr-2">
       <form onSubmit={submitHandler} className="p-4">
         <h1 className="pt-4 pl-4 text-[27px] font-semibold">My Todo</h1>
         <input

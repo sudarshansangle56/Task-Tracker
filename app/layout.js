@@ -1,5 +1,10 @@
+"use client"; // 🔴 Warning: metadata export won't work!
+
+import { useState } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,21 +16,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "DO LIST",
-  description: "Basic app of to do list",
-};
-
 export default function RootLayout({ children }) {
+  const [nav, setNav] = useState(true); // ✅ Now `useState` works
+
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <div className="h-[10px] w-full flex items-center justify-between text-[23px] bg-[#202D48] text-white">
-       
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Navbar nav={nav} setNav={setNav} />
+        <div className="flex">
+          <Sidebar nav={nav} />
+          {children}
         </div>
-        {children}
       </body>
     </html>
   );

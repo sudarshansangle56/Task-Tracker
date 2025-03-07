@@ -8,21 +8,31 @@ function Front() {
   const [taskId, setTaskId] = useState(1);
   const [doneTask, setDoneTask] = useState([]);
 
+  // Load tasks from localStorage
   useEffect(() => {
-    const storedTasks = JSON.parse(localStorage.getItem("tasks"));
-    if (storedTasks && storedTasks.length > 0) {
+    const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const storedDoneTasks = JSON.parse(localStorage.getItem("doneTasks")) || [];
+
+    if (storedTasks.length > 0) {
       setMainTask(storedTasks);
-      setTaskId(storedTasks[storedTasks.length - 1].id + 1); // Set next taskId
+      setTaskId(storedTasks[storedTasks.length - 1].id + 1);
     }
+    setDoneTask(storedDoneTasks);
   }, []);
 
+  // Save pending tasks to localStorage
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(mainTask));
   }, [mainTask]);
 
+  // Save completed tasks to localStorage
+  useEffect(() => {
+    localStorage.setItem("doneTasks", JSON.stringify(doneTask));
+  }, [doneTask]);
+
   const submitHandler = (e) => {
     e.preventDefault();
-    if (!title.trim() || !desc.trim()) return; // Prevent empty tasks
+    if (!title.trim() || !desc.trim()) return;
 
     const newTask = { id: taskId, title, desc };
     setMainTask([...mainTask, newTask]);
@@ -34,13 +44,15 @@ function Front() {
   const deleteHandler = (id) => {
     setMainTask(mainTask.filter((task) => task.id !== id));
   };
+
   const deleteHandlerC = (id) => {
     setDoneTask(doneTask.filter((task) => task.id !== id));
   };
 
   const handleDone = (id, title, desc) => {
     alert(`Your task No ${id} has been done`);
-    setDoneTask([...doneTask, { id, title, desc }]);
+    const completedTask = { id, title, desc };
+    setDoneTask([...doneTask, completedTask]);
     setMainTask(mainTask.filter((task) => task.id !== id));
   };
 
@@ -71,7 +83,8 @@ function Front() {
       </form>
       <hr />
       <div className="sm:flex sm:justify-evenly sm:flex-row">
-        <div className=" rounded-lg  min-h-[200px] min-w-[50%] flex flex-col items-center justify-center">
+        {/* Pending Tasks Section */}
+        <div className="rounded-lg min-h-[200px] min-w-[50%] flex flex-col items-center justify-center">
           <div className="pt-2 flex gap-2 flex-row text-[25px]">
             <div className="bg-[#f21919] mt-[11px] rounded-xl h-5 w-5"></div>
             <h3>Pending-Tasks</h3>
@@ -85,11 +98,13 @@ function Front() {
                       key={task.id}
                       className="bg-[#202d4816] border-[2px] border-[#737b8e5b] drop-shadow-xl flex justify-center flex-col pl-2 pt-2 rounded-md min-h-[185px] w-[250px]"
                     >
-                      <div className="flex gap-2"> 
-                      <h3>Task No: {task.id}</h3>
-                      <h3> Date:{new Date().toLocaleDateString()}</h3>
+                      <div className="flex gap-2">
+                        <h3>Task No: {task.id}</h3>
+                        <h3> Date: {new Date().toLocaleDateString()}</h3>
                       </div>
-                      <span className="font-semibold mt-1 text-[22px]">Title: {task.title}</span>
+                      <span className="font-semibold mt-1 text-[22px]">
+                        Title: {task.title}
+                      </span>
                       <span className="">Description: {task.desc}</span>
                       <div className="sm:gap-3 mt-1 mb-1">
                         <button
@@ -99,9 +114,7 @@ function Front() {
                           Delete
                         </button>
                         <button
-                          onClick={() =>
-                            handleDone(task.id, task.title, task.desc)
-                          }
+                          onClick={() => handleDone(task.id, task.title, task.desc)}
                           className="bg-teal-600 ml-3 hover:bg-teal-700 h-6 text-[13px] border-2 w-[60px] text-white border-none rounded"
                         >
                           Done
@@ -116,23 +129,26 @@ function Front() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center  justify-center sm:justify-normal pl-3 pt-2 pr-3 min-w-[50%] rounded-lg min-h-[220px]">
+        {/* Completed Tasks Section */}
+        <div className="flex flex-col items-center justify-center sm:justify-normal pl-3 pt-2 pr-3 min-w-[50%] rounded-lg min-h-[220px]">
           <div className="flex gap-2 mb-7 w-full items-center justify-center flex-row text-[25px]">
-            <div className="bg-[#42a72b]  mt-[8px] rounded-xl h-5 w-5"></div>
+            <div className="bg-[#42a72b] mt-[8px] rounded-xl h-5 w-5"></div>
             <h3>Completed-Tasks</h3>
           </div>
           {doneTask.length > 0 ? (
-            <div className="flex w-full flex-wrap  items-center  justify-center mb-5 gap-7">
+            <div className="flex w-full flex-wrap items-center justify-center mb-5 gap-7">
               {doneTask.map((task) => (
                 <div
                   key={task.id}
-                  className="bg-[#202d4816] border-[2px] border-[#737b8e5b] drop-shadow-xl flex  flex-col pl-2 justify-center rounded-md min-h-[185px] w-[250px]"
+                  className="bg-[#202d4816] border-[2px] border-[#737b8e5b] drop-shadow-xl flex flex-col pl-2 justify-center rounded-md min-h-[185px] w-[250px]"
                 >
-                      <div className="flex gap-2"> 
-                      <h3>Task No: {task.id}</h3>
-                      <h3> Date:{new Date().toLocaleDateString()}</h3>
-                      </div>
-                  <span className="font-semibold text-[22px] mt-1">Title: {task.title}</span>
+                  <div className="flex gap-2">
+                    <h3>Task No: {task.id}</h3>
+                    <h3> Date: {new Date().toLocaleDateString()}</h3>
+                  </div>
+                  <span className="font-semibold text-[22px] mt-1">
+                    Title: {task.title}
+                  </span>
                   <span className="">Description: {task.desc}</span>
                   <button
                     className="bg-[#e23535] mt-1 h-6 text-[13px] border-2 w-[60px] text-white border-[#e23535] rounded"

@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export default function RootLayout({ children }) {
-  const [nav, setNav] = useState(true); // ✅ Now `useState` works
+  const [nav, setNav] = useState(false); // ✅ Now `useState` works
 
   return (
     <html lang="en">

@@ -57,7 +57,7 @@ function Front() {
     <div className="overflow-hidden bg-white w-full rounded-t-lg
  min-h-[710px]  mr-2">
       <form onSubmit={submitHandler} className="p-4">
-        <h1 className="pt-4 pl-4 text-[27px] font-semibold">My Todo</h1>
+        <h1 className="pt-4 pl-4 text-[27px] font-semibold">My Task-Tracker</h1>
         <input
           className="border-2 drop-shadow-xl rounded-lg border-[#e1dbdb] m-2 p-1"
           type="text"
